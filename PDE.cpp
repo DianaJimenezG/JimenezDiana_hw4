@@ -7,9 +7,9 @@ using namespace std;
 #define N 501
 
 int main(){
-   double k=1.62;
-   double c=820.0;
-   double rho=2.71;
+   double k=1620;
+   double c=820000000;
+   double rho=0.00000271;
    double v=k/(c*rho);
    double r=50;
 
@@ -25,35 +25,37 @@ int main(){
 
 //Condicion inicial.
    double presente[N][N];
+   double futuro[N][N];
+   double dt=1/(2.0*v);
    for(int i=0;i<N;i++){
      for(int j=0;j<N;j++){
-       if(((x[i] - N/2) * (x[i] - N/2) + (y[j] - N/2) * (y[j] - N/2)) < r * r){
+       if(((x[i] - 250) * (x[i] - 250) + (y[j] - 250) * (y[j] - 250)) < r * r){
          presente[j][i]=100.0;
+         futuro[j][i]=presente[j][i];
        }
-       else if(((x[i] - N/2) * (x[i] - N/2) + (y[j] - N/2) * (y[j] - N/2)) == r * r){
+       else if(((x[i] - 250) * (x[i] - 250) + (y[j] - 250) * (y[j] - 250)) == r * r){
          presente[j][i]=10.0;
+         futuro[j][i]=presente[j][i];
        }
        else{
-         presente[j][i]=0.0;
+         presente[j][i]=10.0;
+         futuro[j][i]=presente[j][i];
        }
      }
    }
 
 //Primera iteracion
-   double futuro[N][N];
-   double dt=0.0000001;
-
-   for(int t=0;t<0.1/dt;t++){
-     for(int i=0;i<N;i++){
-       for(int j=0;j<N;j++){
-         if(((x[i] - N/2) * (x[i] - N/2) + (y[j] - N/2) * (y[j] - N/2)) >= r * r){
-           futuro[i][j]=dt*v/1*((presente[i+1][j]+presente[i-1][j]-2.0*presente[i][j])+(presente[i][j+1]+presente[i][j-1]-2.0*presente[i][j]))+presente[i][j];
+   for(int t=0;t<1.0/dt;t++){
+     for(int j=0;j<N;j++){
+       for(int i=0;i<N;i++){
+         if(((x[i] - 250) * (x[i] - 250) + (y[j] - 250) * (y[j] - 250)) > r * r){
+           futuro[j][i]=(dt*v)/(1.0*1.0)*(presente[j+1][i]+presente[j-1][i]+presente[j][i+1]+presente[j][i-1]-4.0*presente[j][i])+presente[j][i];
          }
        }
      }
-     for(int i=0;i<N;i++){
-       for(int j=0;j<N;j++){
-         presente[i][j]=futuro[i][j];
+     for(int j=0;j<N;j++){
+       for(int i=0;i<N;i++){
+         presente[j][i]=futuro[j][i];
        }
      }
    }
