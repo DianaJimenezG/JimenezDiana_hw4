@@ -7,12 +7,20 @@ if __name__ == '__main__':
         input_file=sys.argv[i]
         dat=np.genfromtxt(input_file)
         if(input_file.split("_")[1]!="RK.txt" and input_file.split("_")[0]!="promedio"):
-            h=plt.figure(i+1)
+            fig=plt.figure(i+1)
+            ax=fig.gca(projection='3d')
+            plt.xlabel("x (cm)")
+            plt.ylabel("y (cm)")
             plt.title("Caso "+input_file.split("_")[1].split(".")[0]+": Distribucion de temperaturas en t="+input_file.split(".")[0]+"."+input_file.split(".")[1].split("_")[0])
-            plt.imshow(dat, cmap="jet", vmin=10.0, vmax=100.0)
-            plt.colorbar(label='Temperatura')
-            #plt.show(2)
-            h.savefig(input_file.split("_")[0]+"_Caso"+input_file.split("_")[1].split(".")[0]+".pdf")
+            x = np.linspace(-25, 25, dat.shape[1])
+            y = np.linspace(-25, 25, dat.shape[0])
+            X, Y = np.meshgrid(x, y)
+            surf = ax.plot_surface(X, Y, dat, cmap="jet", linewidth=0, antialiased=False, vmin = 10, vmax = 100)
+            ax.set_zlim(10, 100)
+            fig.colorbar(surf, label = "Temperatura (C)")
+            plt.show(i+1)
+            #fig.savefig(input_file.split("_")[0]+"_Caso"+input_file.split("_")[1].split(".")[0]+".pdf")
+            plt.close()
 
     g=plt.figure(1)
     plt.title("Temperatura promedio en el tiempo")
@@ -43,3 +51,21 @@ if __name__ == '__main__':
             plt.ylabel('y')
             #plt.show(4)
             j.savefig(str(input_file.split(".")[0])+".pdf")
+
+
+    s=plt.figure(80)
+    plt.title('Trayectorias del proyectil con diferentes angulos')
+    for i in range(1,len(sys.argv)):
+        input_file=sys.argv[i]
+        if(input_file.split("_")[1]=="RK.txt" and input_file!="45_RK.txt"):
+            dat=np.genfromtxt(input_file)
+            t=dat[:,0]
+            x=dat[:,1]
+            y=dat[:,2]
+            plt.plot(x,y,label=input_file.split("_")[0])
+    plt.legend()
+    plt.xlabel('x')
+    plt.ylabel('y')
+    #plt.show(4)
+    s.savefig('trayectorias.pdf')
+    plt.close(80)
