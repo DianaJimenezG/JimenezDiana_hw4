@@ -18,9 +18,9 @@ if __name__ == '__main__':
             surf = ax.plot_surface(X, Y, dat, cmap="jet", linewidth=0, antialiased=False, vmin = 10, vmax = 100)
             ax.set_zlim(10, 100)
             fig.colorbar(surf, label = "Temperatura (C)")
-            plt.show(i+1)
-            #fig.savefig(input_file.split("_")[0]+"_Caso"+input_file.split("_")[1].split(".")[0]+".pdf")
-            plt.close()
+            #plt.show(i+1)
+            fig.savefig(input_file.split("_")[0]+"_"+input_file.split("_")[1].split(".")[0]+".pdf")
+            plt.close(i+1)
 
     g=plt.figure(1)
     plt.title("Temperatura promedio en el tiempo")
@@ -36,6 +36,7 @@ if __name__ == '__main__':
     plt.ylabel('Temperatura promedio')
     #plt.show(1)
     g.savefig('promedios.pdf')
+    plt.close(1)
 
     for i in range(1,len(sys.argv)):
         input_file=sys.argv[i]
@@ -51,6 +52,7 @@ if __name__ == '__main__':
             plt.ylabel('y')
             #plt.show(4)
             j.savefig(str(input_file.split(".")[0])+".pdf")
+            plt.close(i*100)
 
 
     s=plt.figure(80)

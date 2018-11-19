@@ -11,7 +11,7 @@ double fronteras(int z,int i,int j,double f[N][N]);
 void PDE(int z, double tiempo);
 
 int main(){
-  PDE(1,30000.0);
+  PDE(1,40000.0);
   PDE(2,400000.0);
   PDE(3,400000.0);
 }
@@ -61,7 +61,7 @@ void PDE(int z, double tiempo){
   double promedio;
 
   ofstream prom;
-  prom.open("promedio_"+to_string(z)+".txt");
+  prom.open("promedio-"+to_string(z)+".txt");
   for(int t=0;t<tiempo/dt;t++){
     for(int j=1;j<N-1;j++){
       for(int i=1;i<N-1;i++){
