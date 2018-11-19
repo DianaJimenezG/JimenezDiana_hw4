@@ -7,10 +7,19 @@ using namespace std;
 
 #define N 200
 
+void PDE(int z);
+
 int main(){
+  PDE(1);
+}
+
+
+
+
+void PDE(int z){
   double k=1.62;
-  double c=820;
-  double rho=2710;
+  double c=820.0;
+  double rho=2710.0;
   double v=k/(c*rho);
   double L=0.5;
   double r=0.05;
@@ -22,8 +31,8 @@ int main(){
   double futuro[N][N];
   double promedio;
 
-  ofstream prom1;
-  prom1.open("promedio_1.txt");
+  ofstream prom;
+  prom.open("promedio_"+to_string(z)+".txt");
 //Derivadas
   for(int t=0;t<30000.0/dt;t++){
     for(int j=1;j<N-1;j++){
@@ -55,11 +64,10 @@ int main(){
         promedio+=presente[j][i];
       }
     }
-    prom1 << t*dt << " " << promedio/(N*N) << endl;
+    prom << t*dt << " " << promedio/(N*N) << endl;
     if(t==0 || t==int(30000.0/dt-1) || t==500 || t==1000){
       ofstream datos;
-      string nombre=to_string(t*dt)+".txt";
-      datos.open(nombre);
+      datos.open(to_string(t*dt)+"_"+to_string(z)+".txt");
       for(int i=0;i<N;i++){
         for(int j=0;j<N;j++){
           datos << presente[i][j] << " ";
@@ -69,5 +77,5 @@ int main(){
       datos.close();
     }
   }
-  prom1.close();
+  prom.close();
 }
