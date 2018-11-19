@@ -7,16 +7,45 @@ using namespace std;
 
 #define N 200
 
-void PDE(int z);
+double fronteras(int z,int i,int j,double f[N][N]);
+void PDE(int z, double tiempo);
 
 int main(){
-  PDE(1);
+  PDE(1,30000.0);
+  PDE(2,400000.0);
+  PDE(3,400000.0);
 }
 
+double fronteras(int z,int i,int j,double f[N][N]){
+  if(z==1){
+    return 10.0;
+  }
+  else if(z==2){
+    if(i==0.0){
+      return f[j][i+1];
+    }
+    else if(j==0.0){
+      return f[j+1][i];
+    }
+    else if(i==N-1){
+      return f[j][i-1];
+    }
+    else{
+      return f[j-1][i];
+    }
+  }
+  else{
+    if(i==N-1 || i==0){
+      return f[j][N-2];
+    }
+    else{
+      return f[N-2][i];
+    }
+  }
+  return -1;
+}
 
-
-
-void PDE(int z){
+void PDE(int z, double tiempo){
   double k=1.62;
   double c=820.0;
   double rho=2710.0;
@@ -33,8 +62,7 @@ void PDE(int z){
 
   ofstream prom;
   prom.open("promedio_"+to_string(z)+".txt");
-//Derivadas
-  for(int t=0;t<30000.0/dt;t++){
+  for(int t=0;t<tiempo/dt;t++){
     for(int j=1;j<N-1;j++){
       for(int i=1;i<N-1;i++){
         if(t==0.0){
@@ -57,6 +85,13 @@ void PDE(int z){
         }
       }
     }
+    for(int j=0;j<N;j++){
+      for(int i=0;i<N;i++){
+        if(i==0 || i==N-1 || j==0 || j==N-1){
+          futuro[j][i]=fronteras(z,i,j,futuro);
+        }
+      }
+    }
     promedio=0.0;
     for(int j=0;j<N;j++){
       for(int i=0;i<N;i++){
@@ -65,7 +100,7 @@ void PDE(int z){
       }
     }
     prom << t*dt << " " << promedio/(N*N) << endl;
-    if(t==0 || t==int(30000.0/dt-1) || t==500 || t==1000){
+    if(t==0 || t==int(tiempo/dt-1) || t==int(tiempo/(dt*6.0)) || t==int(tiempo/(dt*4.0))){
       ofstream datos;
       datos.open(to_string(t*dt)+"_"+to_string(z)+".txt");
       for(int i=0;i<N;i++){
