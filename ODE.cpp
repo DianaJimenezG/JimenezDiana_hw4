@@ -18,7 +18,57 @@ double ddvy(double vx, double vy);
 double * RungeKutta(double t_pasado, double x_pasado, double y_pasado, double vx_pasado, double vy_pasado);
 
 int main(){
+  double t=0.0;
+  double x=0.0;
+  double y=0.0;
+  double vx;
+  double vy;
 
+  ofstream archivo1;
+  archivo1.open("45_RK.txt");
+  vx=300*cos(45*M_PI/180);
+  vy=300*sin(45*M_PI/180);
+  for(int i=0; i<int(tiempo/dt); i++){
+    if(y>=0.0){
+      archivo1 << t << " " << x << " " << y << " " << vx << " " << vy << endl;
+      t=RungeKutta(t, x, y, vx, vy)[0];
+      x=RungeKutta(t, x, y, vx, vy)[1];
+      y=RungeKutta(t, x, y, vx, vy)[2];
+      vx=RungeKutta(t, x, y, vx, vy)[3];
+      vy=RungeKutta(t, x, y, vx, vy)[4];
+    }
+  }
+  cout << "Distancia recorrida =" << x << " [m]" << endl;
+  archivo1.close();
+
+  double xi[7];
+  for(int i=1;i<8;i++){
+    ofstream archivo2;
+    archivo2.open(to_string(10*i)+"_RK.txt");
+    t=0.0;
+    x=0.0;
+    y=0.0;
+    vx=300*cos(10*i*M_PI/180);
+    vy=300*sin(10*i*M_PI/180);
+    for(int i=0;i<int(tiempo/dt);i++){
+      if(y>=0.0){
+        archivo2 << t << " " << x << " " << y << " " << vx << " " << vy << endl;
+        t=RungeKutta(t, x, y, vx, vy)[0];
+        x=RungeKutta(t, x, y, vx, vy)[1];
+        y=RungeKutta(t, x, y, vx, vy)[2];
+        vx=RungeKutta(t, x, y, vx, vy)[3];
+        vy=RungeKutta(t, x, y, vx, vy)[4];
+      }
+    }
+    xi[i-1]=x;
+    archivo2.close();
+  }
+  double x_max=*max_element(begin(xi), end(xi));
+  for(int i=1;i<sizeof(xi);i++){
+    if(x_max==xi[i]){
+      cout << "La mayor distancia recorrida es " << x_max << " [m] a un angulo de " << (i+1)*10.0 << endl;
+    }
+  }
 }
 
 double ddx(double vx){
