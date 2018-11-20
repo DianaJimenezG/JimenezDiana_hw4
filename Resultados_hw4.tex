@@ -1,0 +1,157 @@
+\documentclass[10pt, twocolumn]{article}
+
+\makeatletter
+\def\Dated@name{Fecha: }%
+\makeatother
+\setlength{\parskip}{3pt}
+\usepackage{subfig}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla, es-nodecimaldot]{babel}
+\usepackage{graphicx}
+\usepackage{dcolumn}
+\usepackage{bm}
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor={black}, citecolor={blue}}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{amsmath}
+\captionsetup[figure]{font=footnotesize}
+
+\begin{document}
+
+
+\title{Métodos Computacionales \\
+\small{Tarea 4}}
+
+
+\author{Diana Jiménez [201523617]}
+
+\date{19 de noviembre de 2018}
+
+
+\maketitle
+
+
+\section{Proyectil}
+Para este ejercicio la ecuación diferencial vectorial de segundo orden de un proyectil con resistencia del aire se descompuso según las coordenadas cartesianas:
+\begin{align*}
+    \frac{d^2x}{dt^2} &= -c\frac{|\vec{v}|}{m}v_x \\ \frac{d^2y}{dt^2} &= -g - c\frac{|\vec{v}|}{m}v_y
+\end{align*}
+Además, se sustituyó $dx/dt = v_x$ y $dy/dt = v_y$, de forma que se obtuvieron cuatro ecuaciones diferenciales de primer orden. Estas se resolvieron por medio del algoritmo de Runge-Kutta de cuarto orden.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{45_RK.pdf}
+\caption{Gráfica de la trayectoria del proyectil a un ángulo de 45$^\circ$.}
+\label{angulo45}
+\end{figure}
+La figura \ref{angulo45} muestra la trayectoria del proyectil a un ángulo de 45$^\circ$. Como se esperaba, este modelo contempla la pérdida de energía en el tiempo por lo que la velocidad horizontal del proyectil no se conserva generando la gráfica que se observa en la figura. La velocidad en la dirección horizontal llega a ser prácticamente cero y el proyectil cae rápidamente al suelo en lugar de hacerlo simétricamente, como sucede cuando no se considera la fricción del aire.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{trayectorias.pdf}
+\caption{Trayectoria del proyectil con diferentes ángulos de salida.}
+\label{trayectorias}
+\end{figure}
+
+Como se muestra en la figura \ref{trayectorias}, el ángulo óptimo de lanzamiento del proyectil es de 20$^\circ$ para recorrer la mayor distancia horizontal posible. Esto contradice lo esperado en el análisis sin fricción del aire, por lo que es evidente que una simulación numérica como esta es útil para modelar situaciones físicas más cercanas a la realidad y más complejas de resolver analíticamente.
+
+\section{Difusión térmica}
+\subsection{Caso 1: Condiciones de frontera fijas}
+Este caso modela la difusión térmica con condiciones de frontera fijas. Para este ejercicio se utiliza una temperatura fija de 10$^\circ$C en las fronteras de la sección de calcita.
+
+Inicialmente, las temperaturas sobre la roca se encuentran a 10$^\circ$C, excepto en un círculo de diámetro de 10 cm en el centro de la muestra, donde la temperatura es de 100$^\circ$C. Esta distribución se muestra en la figura \ref{c1_ini}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{0_1.pdf}
+\caption{Gráfica de temperaturas en el espacio para el tiempo 0 en el caso 1.}
+\label{c1_ini}
+\end{figure}
+La evolución de las temperaturas en el tiempo sigue la ecuación diferencial del enunciado. En las figuras \ref{c1_g1} y \ref{c1_g2} se puede ver parte de esta evolución para dos tiempos diferentes.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{4998_1.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 1.}
+\label{c1_g1}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{7499_1.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 1.}
+\label{c1_g2}
+\end{figure}
+El equilibrio en el caso 1 se alcanza cuando las condiciones de frontera fijas ya no permiten la transferencia de calor dentro de la geometría estudiada. La configuración de equilibrio se puede ver en la figura \ref{c1_equi}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{29995_1.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 1.}
+\label{c1_equi}
+\end{figure}
+\subsection{Caso 2: Condiciones de frontera abiertas}
+Para el siguiente caso, la difusión térmica se evalúa con condiciones de frontera abiertas. Esto se modela actualizando los valores de las fronteras con el valor de la posición directamente anterior. Las condiciones iniciales son las mismas que en el caso 1. Estas se pueden ver en la figura \ref{c2_ini}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{0_2.pdf}
+\caption{Gráfica de temperaturas en el espacio para las condiciones iniciales del caso 2.}
+\label{c2_ini}
+\end{figure}
+A pesar de seguir la misma ecuación diferencial, en el caso 2 las condiciones de frontera abiertas cambian el comportamiento de la distribución de temperatura sobre la calcita. La roca es libre para continuar subiendo su temperatura hasta alcanzar la misma temperatura que el círculo en el centro de la muestra. Partes de esta evolución temporal se pueden ver en las figuras \ref{c2_g1} y \ref{c2_g2}.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{66666_2.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 2.}
+\label{c2_g1}
+\end{figure}
+La confguración de equilibrio se alcanza cuando toda la sección de roca está a 100 $^\circ$C.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\linewidth]{99999_2.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 2.}
+\label{c2_g2}
+\end{figure}
+Esta configuración se puede ver en la figura \ref{c2_equi}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{399996_2.pdf}
+\caption{Gráfica de temperaturas en el espacio para la configuración de equilibrio en el caso 2.}
+\label{c2_equi}
+\end{figure}
+\subsection{Caso 3: Condiciones de frontera periódicas}
+Para el caso 3, se considera el escenario con condiciones de frontera periódicas. En este caso, la temperatura saliente en uno de los extremos horizontales entra por el extremo opuesto y la temperatura saliente por uno de los extremos verticales entra por el extremo opuesto. Esto quiere decir que en dos extremos las condiciones de frontera son abiertas, y en los dos extremos restantes la frontera toma el valor del extremo abierto opuesto. De nuevo, las condiciones iniciales para el caso 3 son iguales a las de los otros dos casos. Estas se pueden ver en la figura \ref{c3_ini}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{0_3.pdf}
+\caption{Gráfica de temperaturas en el espacio para las condiciones iniciales del caso 3.}
+\label{c3_ini}
+\end{figure}
+La evolución temporal de las temperaturas en la calcita con las condiciones de frontera del caso 3 se pueden ver en las figuras \ref{c3_g1} y \ref{c3_g2}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{66666_3.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 3.}
+\label{c3_g1}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{99999_3.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 3.}
+\label{c3_g2}
+\end{figure}
+En este caso el equilibrio también se consigue cuando la temperatura de toda la muestra es igual a 100$^\circ$C. Esta configuración se muestra en la figura \ref{c3_equi}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{399996_3.pdf}
+\caption{Gráfica de temperaturas en el espacio para un tiempo definido para el caso 3.}
+\label{c3_equi}
+\end{figure}
+\subsection{Comparación de casos}
+En la figura \ref{promedios} se puede ver el cambio en el tiempo de la temperatura promedio de la muestra de calcita.
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{promedios.pdf}
+\caption{Temperaturas promedio en el tiempo para los tres casos}
+\label{promedios}
+\end{figure}
+Como se ve en la figura, la convergencia de la distribución de temperaturas hacia el estado de equilibrio es más rápida en el caso 1. Esto se debe a que las condiciones de frontera fijas limitan el efecto de la disipación de calor proveniente del centro caliente de la muestra. Así mismo, en esta gráfica y en las mostradas en las subsecciones anteriores se observa un comportamiento muy similar entre las condiciones de frontera abiertas y las condiciones de frontera periódicas. La causa de esta similitud es la simetría de la muestra: en el caso de fronteras periódicas la información entrante a uno de los extremos de la muestra es muy similar a la distribución de temperaturas ya existente. Por esta razón, en este caso particular las condiciones de frontera abiertas y periódicas producen prácticamente la misma respuesta en el tiempo.
+
+\end{document}
