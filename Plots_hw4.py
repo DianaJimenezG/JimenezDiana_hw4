@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+from mpl_toolkits.mplot3d import Axes3D
 
 if __name__ == '__main__':
+    #Genera graficas 3d del perfil de temperaturas del objeto. Referencia:https://matplotlib.org/examples/mplot3d/surface3d_demo.html
     for i in range(1,len(sys.argv)):
         input_file=sys.argv[i]
         dat=np.genfromtxt(input_file)
@@ -11,6 +13,7 @@ if __name__ == '__main__':
             ax=fig.gca(projection='3d')
             plt.xlabel("x (cm)")
             plt.ylabel("y (cm)")
+            ax.set_zlabel("Temperatura (C)")
             plt.title("Caso "+input_file.split("_")[1].split(".")[0]+": Distribucion de temperaturas en t="+input_file.split(".")[0]+"."+input_file.split(".")[1].split("_")[0])
             x = np.linspace(-25, 25, dat.shape[1])
             y = np.linspace(-25, 25, dat.shape[0])
@@ -19,9 +22,10 @@ if __name__ == '__main__':
             ax.set_zlim(10, 100)
             fig.colorbar(surf, label = "Temperatura (C)")
             #plt.show(i+1)
-            fig.savefig(input_file.split("_")[0]+"_"+input_file.split("_")[1].split(".")[0]+".pdf")
+            fig.savefig(input_file.split(".")[0]+"_"+input_file.split("_")[1].split(".")[0]+".pdf")
             plt.close(i+1)
 
+    #Genera la grafica de temperatura promedio. Para el caso 1 el tiempo es mas corto para hacer mas rapido la ejecucion.
     g=plt.figure(1)
     plt.title("Temperatura promedio en el tiempo")
     for i in range(1,len(sys.argv)):
@@ -38,6 +42,7 @@ if __name__ == '__main__':
     g.savefig('promedios.pdf')
     plt.close(1)
 
+    #Genera la grafica para la trayectoria del proyectil en el tiempo a un angulo de 45.
     for i in range(1,len(sys.argv)):
         input_file=sys.argv[i]
         if(input_file=="45_RK.txt"):
@@ -54,7 +59,7 @@ if __name__ == '__main__':
             j.savefig(str(input_file.split(".")[0])+".pdf")
             plt.close(i*100)
 
-
+    #Genera la gráfica con las trasyectorias del proyectil en el tiempo con diferentes angulos iniciales. 
     s=plt.figure(80)
     plt.title('Trayectorias del proyectil con diferentes angulos')
     for i in range(1,len(sys.argv)):
