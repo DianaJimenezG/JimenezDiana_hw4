@@ -1,10 +1,12 @@
-define _USE_MATdt_DEFINES
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 using namespace std;
 
+//Constantes
 #define g 10.0
 #define m 0.2
 #define c 0.2
@@ -18,12 +20,14 @@ double ddvy(double vx, double vy);
 double * RungeKutta(double t_pasado, double x_pasado, double y_pasado, double vx_pasado, double vy_pasado);
 
 int main(){
+  //Parametros inciales.
   double t=0.0;
   double x=0.0;
   double y=0.0;
   double vx;
   double vy;
 
+  //Ejecuta la funcion de RungeKutta con angulo de 45. Guarda en archivo.
   ofstream archivo1;
   archivo1.open("45_RK.txt");
   vx=300*cos(45*M_PI/180);
@@ -38,9 +42,10 @@ int main(){
       vy=RungeKutta(t, x, y, vx, vy)[4];
     }
   }
-  cout << "Distancia recorrida =" << x << " [m]" << endl;
+  cout << "Distancia recorrida con 45 grados = " << x << " [m]" << endl;
   archivo1.close();
 
+  //Ejecuta la funcion de RungeKutta variando el angulo inicial. Guarda en archivo.
   double xi[7];
   for(int i=1;i<8;i++){
     ofstream archivo2;
@@ -63,6 +68,7 @@ int main(){
     xi[i-1]=x;
     archivo2.close();
   }
+  //Calcula la maxima distancia y busca su angulo correspondiente. Imprime en la terminal.
   double x_max=*max_element(begin(xi), end(xi));
   for(int i=1;i<sizeof(xi);i++){
     if(x_max==xi[i]){
@@ -71,6 +77,7 @@ int main(){
   }
 }
 
+//Derivadas
 double ddx(double vx){
   return vx;
 }
@@ -87,6 +94,7 @@ double ddvy(double vx, double vy){
   return -g-c*sqrt(vx*vx+vy*vy)*vy/m;
 }
 
+//Funcion que ejecuta el algoritmo de RungeKutta segun lo especificado en el repositorio de la clase.
 double * RungeKutta(double t_pasado, double x_pasado, double y_pasado, double vx_pasado, double vy_pasado){
   double k_1_x=ddx(vx_pasado);
   double k_1_y=ddy(vy_pasado);
